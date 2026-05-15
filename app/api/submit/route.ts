@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
   }
 
   const phone = str(formData, "phone");
-  if (!phone || !/^\+?[\d\s\-()+]{7,20}$/.test(phone)) {
+  if (!phone || !/^\+?[0-9\s().+-]{7,20}$/.test(phone)) {
     return NextResponse.json({ error: "A valid phone number is required" }, { status: 400 });
   }
 

@@ -194,7 +194,7 @@ export default function IntakeForm() {
               <input
                 required
                 type="tel"
-                pattern="^\+?[\d\s\-()+]{7,20}$"
+                pattern="^\+?[0-9\s().+-]{7,20}$"
                 className="form-input"
                 value={form.phone}
                 onChange={(e) => { e.target.setCustomValidity(""); set("phone")(e); }}
