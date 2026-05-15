@@ -35,8 +35,8 @@ export async function POST(req: NextRequest) {
   }
 
   const phone = str(formData, "phone");
-  if (!phone || !/^\+?[0-9\s()+.\-]{7,20}$/.test(phone)) {
-    return NextResponse.json({ error: "A valid phone number is required" }, { status: 400 });
+  if (!phone || !/^\+[0-9\s()\-\.]{6,18}$/.test(phone)) {
+    return NextResponse.json({ error: "A valid phone number with country code is required (e.g. +233265427212)" }, { status: 400 });
   }
 
   const client = await pool.connect();

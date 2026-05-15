@@ -194,7 +194,7 @@ export default function IntakeForm() {
               <input
                 required
                 type="tel"
-                pattern="^\+?[0-9\s()+.\-]{7,20}$"
+                pattern="^\+[0-9\s()\-\.]{6,18}$"
                 className="form-input"
                 value={form.phone}
                 onChange={(e) => { e.target.setCustomValidity(""); set("phone")(e); }}
@@ -202,11 +202,13 @@ export default function IntakeForm() {
                   const el = e.target as HTMLInputElement;
                   if (el.validity.valueMissing) {
                     el.setCustomValidity("Phone number is required");
+                  } else if (!el.value.startsWith("+")) {
+                    el.setCustomValidity("Please include your country code, e.g. +233 for Ghana or +44 for UK");
                   } else {
-                    el.setCustomValidity("Enter a valid phone number — digits, spaces, dashes, and + only (e.g. +44 7700 900000)");
+                    el.setCustomValidity("Enter a valid phone number with country code, e.g. +233265427212 or +44 7700 900000");
                   }
                 }}
-                placeholder="e.g. +44 7700 900000"
+                placeholder="e.g. +233265427212"
               />
             </div>
             <div>
