@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 import pool from "@/lib/db";
 
 const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE ?? "10485760", 10);
-const UPLOAD_DIR = path.join(process.cwd(), "uploads");
+// /tmp is the only writable directory on serverless platforms (e.g. Vercel)
+const UPLOAD_DIR = process.env.UPLOAD_DIR ?? path.join("/tmp", "uploads");
 
 function str(formData: FormData, key: string): string {
   return (formData.get(key) as string | null)?.trim() ?? "";
@@ -38,11 +39,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "A valid phone number is required" }, { status: 400 });
   }
 
-  // Ensure uploads directory exists
-  await mkdir(UPLOAD_DIR, { recursive: true });
-
   const client = await pool.connect();
   try {
+    await mkdir(UPLOAD_DIR, { recursive: true });
     await client.query("BEGIN");
 
     const result = await client.query<{ id: string }>(
