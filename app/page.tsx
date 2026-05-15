@@ -175,7 +175,15 @@ export default function IntakeForm() {
                 type="email"
                 className="form-input"
                 value={form.email}
-                onChange={set("email")}
+                onChange={(e) => { e.target.setCustomValidity(""); set("email")(e); }}
+                onInvalid={(e) => {
+                  const el = e.target as HTMLInputElement;
+                  if (el.validity.valueMissing) {
+                    el.setCustomValidity("Email address is required");
+                  } else {
+                    el.setCustomValidity("Enter a valid email address, e.g. you@organisation.org");
+                  }
+                }}
                 placeholder="you@organisation.org"
               />
             </div>
@@ -187,10 +195,17 @@ export default function IntakeForm() {
                 required
                 type="tel"
                 pattern="^\+?[\d\s\-()+]{7,20}$"
-                title="Enter a valid phone number (7–20 digits, spaces, dashes, or + allowed)"
                 className="form-input"
                 value={form.phone}
-                onChange={set("phone")}
+                onChange={(e) => { e.target.setCustomValidity(""); set("phone")(e); }}
+                onInvalid={(e) => {
+                  const el = e.target as HTMLInputElement;
+                  if (el.validity.valueMissing) {
+                    el.setCustomValidity("Phone number is required");
+                  } else {
+                    el.setCustomValidity("Enter a valid phone number — digits, spaces, dashes, and + only (e.g. +44 7700 900000)");
+                  }
+                }}
                 placeholder="e.g. +44 7700 900000"
               />
             </div>
