@@ -28,6 +28,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Name is required" }, { status: 400 });
   }
 
+  const email = str(formData, "email");
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: "A valid email address is required" }, { status: 400 });
+  }
+
+  const phone = str(formData, "phone");
+  if (!phone || !/^\+?[\d\s\-()+]{7,20}$/.test(phone)) {
+    return NextResponse.json({ error: "A valid phone number is required" }, { status: 400 });
+  }
+
   // Ensure uploads directory exists
   await mkdir(UPLOAD_DIR, { recursive: true });
 
@@ -37,22 +47,24 @@ export async function POST(req: NextRequest) {
 
     const result = await client.query<{ id: string }>(
       `INSERT INTO submissions (
-        name, role, organisation, geography, legal_status,
+        name, email, phone, role, organisation, geography, legal_status,
         impact_delivered, how_delivers_impact, impact_measurement,
         staff_size, annual_budget, strengths, gaps,
         interested_from_mpa, ideal_deal, what_you_offer, timeline,
         culture_description, junior_culture_description,
         admired_organisation, preventing_work
       ) VALUES (
-        $1,$2,$3,$4,$5,
-        $6,$7,$8,
-        $9,$10,$11,$12,
-        $13,$14,$15,$16,
-        $17,$18,
-        $19,$20
+        $1,$2,$3,$4,$5,$6,$7,
+        $8,$9,$10,
+        $11,$12,$13,$14,
+        $15,$16,$17,$18,
+        $19,$20,
+        $21,$22
       ) RETURNING id`,
       [
         name,
+        email,
+        phone,
         str(formData, "role"),
         str(formData, "organisation"),
         str(formData, "geography"),

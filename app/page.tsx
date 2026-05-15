@@ -17,6 +17,8 @@ const MPA_OPTIONS = [
 
 interface FormState {
   name: string;
+  email: string;
+  phone: string;
   role: string;
   organisation: string;
   geography: string;
@@ -40,6 +42,8 @@ interface FormState {
 
 const EMPTY: FormState = {
   name: "",
+  email: "",
+  phone: "",
   role: "",
   organisation: "",
   geography: "",
@@ -160,6 +164,34 @@ export default function IntakeForm() {
                 value={form.role}
                 onChange={set("role")}
                 placeholder="e.g. CEO, Programme Director"
+              />
+            </div>
+            <div>
+              <label className="form-label">
+                Email address <span className="text-red-500">*</span>
+              </label>
+              <input
+                required
+                type="email"
+                className="form-input"
+                value={form.email}
+                onChange={set("email")}
+                placeholder="you@organisation.org"
+              />
+            </div>
+            <div>
+              <label className="form-label">
+                Phone number <span className="text-red-500">*</span>
+              </label>
+              <input
+                required
+                type="tel"
+                pattern="^\+?[\d\s\-()+]{7,20}$"
+                title="Enter a valid phone number (7–20 digits, spaces, dashes, or + allowed)"
+                className="form-input"
+                value={form.phone}
+                onChange={set("phone")}
+                placeholder="e.g. +44 7700 900000"
               />
             </div>
             <div>
